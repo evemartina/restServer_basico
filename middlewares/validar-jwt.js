@@ -32,8 +32,7 @@ const validarJWT = async(req= request,res=response,next)=>{
 
         next();
 
-    } catch (error) {
-        
+    } catch (error) {        
         console.log(token);
         res.status(401).json({
             msg:'token invalidp'
