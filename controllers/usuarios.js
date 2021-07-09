@@ -49,11 +49,12 @@ const usuariosPut = async(  req= request,res = response) =>{
     }) 
 }  
 const usuariosDelete = async( req,res = response) =>{ 
-    const {id} = req.params
-    //const   usuario = await Usuario.findByIdAndDelete(id); borrado fisico
-    const   usuario = await Usuario.findByIdAndUpdate(id,{estado:false})
+    const {id}  = req.params
+    const uid   = req.uid;
+    const usuarioLogin  = req.usuario;
+    const   usuario     = await Usuario.findByIdAndUpdate(id,{estado:false})
 
-    res.json(usuario) 
+    res.json({usuario,uid,usuarioLogin}) 
 }  
 const usuariosPatch = ( req,res = response) =>{ 
     res.json({               
