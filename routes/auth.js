@@ -1,13 +1,8 @@
-
-const {Router} = require('express');
-const { check } = require('express-validator');
-
-
+const {Router}                 = require('express');
+const { check }                = require('express-validator');
 const { login, googleSingnin } = require('../controllers/auth');
-const { validarCampos } = require('../middlewares/validar-campos');
-
-
-const router = Router();
+const { validarCampos }        = require('../middlewares/validar-campos');
+const router                   = Router();
 
 router.post('/login', [
     check('correo','el correo es obligatorio').isEmail(),

@@ -1,8 +1,8 @@
 const { response, request } = require("express");
 
-const Usuario = require('../models/usurio');
-const bcrypjs = require('bcrypt-nodejs');
-const { generarJWT } = require("../helpers/generarJWT");
+const Usuario          = require('../models/usuario');
+const bcrypjs          = require('bcrypt-nodejs');
+const { generarJWT }   = require("../helpers/generarJWT");
 const { googleVerify } = require("../helpers/googlr-verify");
 
 
@@ -15,20 +15,20 @@ const login = async (req = request,res = response)=>{
         const usuario = await Usuario.findOne({correo})
         if(!usuario){
             return res.status(400).json({
-                msg:'Usuario / password no son corretos'
+                msg: 'Usuario / password no son corretos'
             });
         }
 
         if(!usuario.estado){
             return res.status(400).json({
-                msg:'Usuario / password no son corretos :estado false'
+                msg: 'Usuario / password no son corretos :estado false'
             });
         }
 
         const validarPass = bcrypjs.compareSync(password,usuario.password)
         if(!validarPass){
             return res.status(400).json({
-                msg:'Usuario / password no son corretos :password'
+                msg: 'Usuario / password no son corretos :password'
             });
         }
 
@@ -41,7 +41,7 @@ const login = async (req = request,res = response)=>{
 
     } catch (error) {
         return res.status(500)=json({
-            msg:'Algo salio mal'
+            msg: 'Algo salio mal'
         });
     }
    
@@ -53,14 +53,14 @@ const googleSingnin = async (req = request,res = response)=>{
     try {
 
         const {nombre,correo,img} = await googleVerify(id_token);
-        let usuario = await Usuario.findOne({correo});
+        let   usuario             = await Usuario.findOne({correo});
         if(!usuario){
             const data = {
                 nombre,
                 correo,
-                password:'ss',
+                password: 'ss',
                 img,
-                google:true
+                google: true
             }
             usuario = new Usuario(data);
             await usuario.save();
@@ -68,7 +68,7 @@ const googleSingnin = async (req = request,res = response)=>{
 
         if(!usuario.estado){
             return res.status(401).json({
-                msg:'Hable con el administador, usuario bloqueado'
+                msg: 'Hable con el administador, usuario bloqueado'
             });
         }
         const token = await generarJWT(usuario.id)
@@ -80,7 +80,7 @@ const googleSingnin = async (req = request,res = response)=>{
 
     } catch (error) {
         res.status(400).json({
-            msg:'token google invalido'
+            msg: 'token google invalido'
         })
     }
 
